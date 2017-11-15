@@ -1,0 +1,105 @@
+// Keyboard matrix table definition file
+// for mz80rpi
+
+[106/109 JP Type]
+// Matrix = Linux Input Subsystem Code
+
+// *1*
+00 = 02		// bit0:[1] = KEY_1
+01 = 04		// bit1:[3] = KEY_3
+02 = 06		// bit2:[5] = KEY_5
+03 = 08		// bit4:[7] = KEY_7
+04 = 0a		// bit5:[9] = KEY_9
+05 = 0c		// bit5:[-] = KEY_MINUS
+06 = 45		// bit6:[「]= KEY_NUMLOCK
+07 = 37		// bit7:[ャ]= KEY_KPASTERISK
+
+// *2*
+10 = 03		// bit0:[2] = KEY_2
+11 = 05		// bit1:[4] = KEY_4
+12 = 07		// bit2:[6] = KEY_6
+13 = 09		// bit3:[8] = KEY_8
+14 = 0b		// bit4:[0] = KEY_0
+15 = 0d		// bit5:[ケ]= KEY_EQUAL
+16 = 62		// bit6:[ァ]= KEY_KPSLASH
+17 = 4a		// bit7:[月]= KEY_KPMINUS
+
+// *3*
+20 = 10		// bit0[q] = KEY_Q
+21 = 12		// bit1[e] = KEY_E
+22 = 14		// bit2[t] = KEY_T
+23 = 16		// bit3[u] = KEY_U
+24 = 18		// bit4[o] = KEY_O
+25 = 1a		// bit5[=] = KEY_LEFTBRACE
+26 = 47		// bit6[」]= KEY_KP7
+27 = 49		// bit7[ュ]= KEY_KP9
+
+// *4*
+30 = 11		// bit0[w] = KEY_W
+31 = 13		// bit1[r] = KEY_R
+32 = 15		// bit2[y] = KEY_Y
+33 = 17		// bit3[i] = KEY_I
+34 = 19		// bit4[p] = KEY_P
+35 = 7c		// bit5[ム]= KEY_YEN
+36 = 48		// bit6[ィ]= KEY_KP8
+37 = 4e		// bit7[木]= KEY_KPPLUS
+
+// *5*
+40 = 1e		// bit0[a] = KEY_A
+41 = 20		// bit1[d] = KEY_D
+42 = 22		// bit2[g] = KEY_G
+43 = 24		// bit3[j] = KEY_J
+44 = 26		// bit4[l] = KEY_L
+45 = 28		// bit5[ロ]= KEY_APOSTROPHE
+46 = 4b		// bit6[、]= KEY_KP4
+47 = 4d		// bit7[ョ]= KEY_KP6
+
+// *6*
+50 = 1f		// bit0[s] = KEY_S
+51 = 21		// bit1[f] = KEY_F
+52 = 23		// bit2[h] = KEY_H
+53 = 25		// bit3[k] = KEY_K
+54 = 27		// bit4[;] = KEY_SEMICOLON
+55 = 1b		// bit5[ヲ]= KEY_RIGHTBRACE
+56 = 4c		// bit6[ゥ]= KEY_KP5
+57 = 68		// bit7[金]= KEY_PAGEUP
+
+// *7*
+60 = 2c		// bit0[z] = KEY_Z
+61 = 2e		// bit1[c] = KEY_C
+62 = 30		// bit2[b] = KEY_B
+63 = 32		// bit3[m] = KEY_M
+64 = 34		// bit4[.] = KEY_DOT
+65 = 0e		// bit5[英]= KEY_BACKSPACE
+66 = 4f		// bit6[・]= KEY_KP1
+67 = 51		// bit7[ッ]= KEY_KP3
+
+// *8*
+70 = 2d		// bit0[x] = KEY_X
+71 = 2f		// bit1[v] = KEY_V
+72 = 31		// bit2[n] = KEY_N
+73 = 33		// bit3[,] = KEY_COMMA
+74 = 35		// bit4[/] = KEY_SLASH
+75 = 2b		// bit5[゜]= KEY_BACKSLASH
+76 = 50		// bit6[ェ]= KEY_KP2
+77 = 60		// bit7[生]= KEY_KPENTER
+
+// *9*
+80 = 2a		// bit0[shift] = KEY_LEFTSHIFT
+81 = 3a		// bit1[insdel]= KEY_CAPSLOCK
+83 = 69		// bit3[←]  = KEY_LEFT
+83 = 6a		// bit3[→]  = KEY_RIGHT
+84 = 1c		// bit4[CR]    = KEY_ENTER
+85 = 36		// bit5[shift] = KEY_RIGHTSHIFT
+86 = 52		// bit6[。]    = KEY_KP0
+87 = 53		// bit7[ー]    = KEY_KPDOT
+
+// *10*
+90 = 0f		// bit0[CLR] = KEY_TAB
+91 = 39		// bit1[SPC] = KEY_SPACE
+92 = 67		// bit2[↑]= KEY_UP
+92 = 6c		// bit2[↓]= KEY_DOWN
+93 = 29		// bit3[BRK] = KEY_GRAVE
+95 = 59		// bit5[゛]   = KEY_RO
+96 = 6b		// bit6[ォ]  = KEY_END
+97 = 6d		// bit7[円]  = KEY_PAGEDOWN
