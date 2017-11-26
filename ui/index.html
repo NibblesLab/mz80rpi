@@ -12,30 +12,36 @@
     <div class="title">
         <p><img src={{ static_url("pic/title.png") }} width="320" height="133" alt="PasocomMini MZ-80C YetAnotherEmulator"></p>
     </div>
+    <div class="information">
+        <p>
+            CMT:<span id="casset">Empty</span>
+        </p>
+    </div>
+    <div id="progress_bar"><div class="percent"></div></div>
     <div class="control">
         <p>
-            <input type="button" id="zrst" value="CPU Reset" />
-            <input type="button" id="pcg1" value="PCG ON" />
-            <input type="button" id="pcg0" value="PCG OFF" disabled />
+            <button id="zrst">CPU Reset</button>
+            <button id="pcg1">PCG ON</button>
+            <button id="pcg0" disabled >PCG OFF</button>
         </p>
     </div>
     <div class="cmt">
         <p>
             <label for="cmtpath">テープイメージ：</label>
             <input type="text" id="cmtpath" name="cmtpath" size="30" />
-            <input type="button" id="setcmt" value="SET" />
+            <button id="setcmt">SET</button>
         </p>
         <p>
-            <input type="button" id="stop" value="STOP" />
-            <input type="button" id="play" value="PLAY" />
-            <input type="button" id="eject" value="EJECT" />
+            <button id="stop">STOP</button>
+            <button id="play">PLAY</button>
+            <button id="eject">EJECT</button>
         </p>
     </div>
     <div class="oneline">
         <p>
-            <label for="key1line">キー入力：</label>
-            <input type="text" id="key1line" name="key1line" size="20" />
-            <input type="button" id="cr" value="CR" />
+            <label for="getl">キー入力：</label>
+            <input type="text" id="getl" name="getl" size="20" />
+            <button id="cr">CR</button>
         </p>
     </div>
 </body>

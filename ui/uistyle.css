@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.information {
+    text-align: center;
+}
+
 .control {
     text-align: center;
 }
@@ -12,4 +16,18 @@
 
 .oneline {
     text-align: center;
+}
+
+#progress_bar {
+    margin: 0 auto;
+    font-size: 14px;
+    clear: both;
+    opacity: 0;
+    width: 320px;
+}
+
+#progress_bar .percent {
+    background-color: #808080;
+    height: 5px;
+    width: 0%;
 }
