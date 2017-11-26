@@ -54,12 +54,15 @@ T700_TS			ts700;
 T8253_DAT		_8253_dat;
 T8253_STAT		_8253_stat[3];
 
+// ステータス
+extern SYS_STATUS sysst;
+extern int xferFlag;
+
 /* for Keyboard Matrix */
 UINT8 keyports[10] ={ 0,0,0,0,0, 0,0,0,0,0 };
 
 // MZTフォーマット展開用
 UINT32 *mzt_buf;
-int mzt_size;
 unsigned int pwmTable[256][3];
 unsigned int mzt_leader1[450];
 unsigned int mzt_leader2[437];
@@ -77,6 +80,7 @@ void set_mztData(char *mztFile)
 	{
 		// MZTファイルが開けなかった時はイジェクト
 		ts700.mzt_settape = 0;
+		sysst.tape = 0;
 		return;
 	}
 
@@ -156,6 +160,8 @@ void set_mztData(char *mztFile)
 	printf("MZT size:%d\n", ts700.mzt_bsize);
 	ts700.mzt_elapse = 0;
 	ts700.mzt_settape = 1;
+	sysst.tape = 0;
+	xferFlag |= SYST_CMT;
 	fclose(fd);
 }
 
@@ -424,7 +430,8 @@ int pit_count(void)
 //
 void play8253(void)
 {
-	int freq2,freqtmp;
+	//int freq2,freqtmp;
+	int freqtmp;
 
 	// サウンドを鳴らす
 	freqtmp = _8253_stat[0].counter_base;		
@@ -520,7 +527,7 @@ void makePWM(void)
 // SHARP PWMフォーマットにもとづくテープリード信号
 int cmt_read(void)
 {
-	int elapsed, tword, tbit;
+	int elapsed, tword, tbit, percent;
 
 	// テープ停止時はゼロを返す
 	if(ts700.cmt_tstates == 0)
@@ -540,8 +547,16 @@ int cmt_read(void)
 		//printf("0\n");
 		ts700.cmt_play = 0;
 		ts700.cmt_tstates = 0;
+		sysst.tape =100;
 		setup_cpuspeed(1);
 		return 0;
+	}
+	percent = (tword * 100) / ts700.mzt_bsize;
+	if(percent != sysst.tape)
+	{
+		//printf("old=%d new=%d\n", sysst.tape, percent);
+		sysst.tape = percent;
+		xferFlag |= SYST_CMT;
 	}
 	// データ位置からビットの状態を取り出す
 	if((mzt_buf[tword] << tbit) & 0x80000000)
@@ -724,6 +739,8 @@ void mmio_out(int addr,int val)
 					ts700.mzt_start = ts700.cpu_tstates;
 					ts700.cmt_tstates = 1;
 					setup_cpuspeed(5);
+					sysst.motor = 1;
+					xferFlag |= SYST_MOTOR;
 				}
 			}
 			else
@@ -732,6 +749,8 @@ void mmio_out(int addr,int val)
 				ts700.cmt_tstates = 0;
 				setup_cpuspeed(1);
 				ts700.mzt_elapse += (ts700.cpu_tstates - ts700.mzt_start);
+				sysst.motor = 0;
+				xferFlag |= SYST_MOTOR;
 			}
 		}
 		hw700.motor = val & 0x08;
@@ -777,6 +796,8 @@ void mmio_out(int addr,int val)
 							ts700.mzt_start = ts700.cpu_tstates;
 							ts700.cmt_tstates = 1;
 							setup_cpuspeed(5);
+							sysst.motor = 1;
+							xferFlag |= SYST_MOTOR;
 						}
 					}
 					else
@@ -785,6 +806,8 @@ void mmio_out(int addr,int val)
 						ts700.cmt_tstates = 0;
 						setup_cpuspeed(1);
 						ts700.mzt_elapse += (ts700.cpu_tstates - ts700.mzt_start);
+						sysst.motor = 0;
+						xferFlag |= SYST_MOTOR;
 					}
 				}
 				hw700.motor = 8;
@@ -1019,7 +1042,7 @@ byte Z80_In (word Port)
 void Z80_Out(word Port,word Value)
 {
 	int iPort = (int) (Port & 0xFF);
-	int iVal =(int) (Value & 0xFF);
+	//int iVal =(int) (Value & 0xFF);
 
 //	TMEMBANK *mp;
 

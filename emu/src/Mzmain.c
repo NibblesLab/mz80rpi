@@ -47,9 +47,16 @@ void *scrn_thread(void *arg);
 static pthread_t keyin_thread_id;
 void *keyin_thread(void *arg);
 
-#define	SOCK_PATH	"/tmp/cmdxfer"
-int sockfd;
-struct sockaddr_un s_addr;
+//#define	SOCK_PATH	"/tmp/cmdxfer"
+//int sockfd;
+//struct sockaddr_un s_addr;
+#define	FIFO_i_PATH	"/tmp/cmdxfer"
+#define	FIFO_o_PATH	"/tmp/stsxfer"
+int fifo_i_fd, fifo_o_fd;
+
+SYS_STATUS sysst;
+int xferFlag = 0;
+int wFifoOpenFlag = 0;
 
 #define SyncTime	16667000									/* 1/60 sec. */
 
@@ -229,10 +236,23 @@ void mz_mon_setup(void)
 }
 
 //--------------------------------------------------------------
-// UNIXドメイン通信の準備
+// FIFOの準備
 //--------------------------------------------------------------
 static int setupXfer(void)
 {
+	// 外部プログラムから入力
+	mkfifo(FIFO_i_PATH, 0777);
+	fifo_i_fd = open(FIFO_i_PATH, O_RDONLY|O_NONBLOCK);
+	if(fifo_i_fd == -1)
+	{
+		perror("FIFO(i) open");
+		return -1;
+	}
+
+	// 外部プログラムへ出力
+	mkfifo(FIFO_o_PATH, 0777);
+
+/*
 	// UNIXドメインソケットの生成
 	sockfd = socket(AF_UNIX, SOCK_STREAM|SOCK_NONBLOCK, 0);
 	if(sockfd == -1)
@@ -262,7 +282,54 @@ static int setupXfer(void)
 		perror("listen");
 		return -1;
 	}
+*/
+	return 0;
+}
 
+//--------------------------------------------------------------
+// 外部プログラムへのステータス送信処理
+//--------------------------------------------------------------
+static int statusXfer(void)
+{
+	char sdata[160];
+	int pos = 0;
+
+	if(xferFlag & SYST_CMT)
+	{
+		sprintf(&sdata[pos], "CP%3d", sysst.tape);
+		pos = 6;
+		xferFlag &= ~SYST_CMT;
+	}
+	if(xferFlag & SYST_MOTOR)
+	{
+		if(pos != 0)
+		{
+			sdata[pos - 1] = ',';
+		}
+		sprintf(&sdata[pos], "CM%1d", sysst.motor);
+		pos += 4;
+		xferFlag &= ~SYST_MOTOR;
+	}
+
+	if(pos != 0)
+	{
+		// 初回送信時にオープン
+		if(wFifoOpenFlag == 0)
+		{
+			fifo_o_fd = open(FIFO_o_PATH, O_WRONLY);
+			if(fifo_o_fd == -1)
+			{
+				perror("FIFO(o) open");
+				return -1;
+			}
+			wFifoOpenFlag = 1;
+		}
+
+		write(fifo_o_fd, sdata, pos);
+
+		// クローズしない
+		//close(fifo_o_fd);
+	}
 	return 0;
 }
 
@@ -271,30 +338,36 @@ static int setupXfer(void)
 //--------------------------------------------------------------
 static void processXfer(void)
 {
-	int confd, num;
+	int num;
 	unsigned char ch, cmd[80];
 	KBDMSG kbdm;
-	
-	// 接続
-	confd = accept(sockfd, NULL, NULL);
-	if(confd == -1)
-	{
-		return;
-	}
+
+	// 予約されたステータス送信処理
+	statusXfer();
 
 	// 1行受信
 	ch = 0x01;
-	num = 0;
+	num = 1;
 	memset(cmd, 0, 80);
+	if(read(fifo_i_fd, &cmd[0], 1) <= 0)	// 受信データチェック
+	{
+		return;
+	}
+	if(cmd[0] == 0)	// 先頭がゼロなら無効行
+	{
+		return;
+	}
 	while(ch != 0)
 	{
-		if(read(confd, &ch, 1) == 0)
+		if(read(fifo_i_fd, &ch, 1) == 0)
 		{
-			usleep(1000);
+			usleep(100);
 			continue;
 		}
 		cmd[num++] = ch;
 	}
+	printf("recieved:%s\n", cmd);
+	num = strlen((char *)cmd);
 
 	switch(cmd[0])
 	{
@@ -318,6 +391,8 @@ static void processXfer(void)
 				ts700.mzt_start = ts700.cpu_tstates;
 				ts700.cmt_tstates = 1;
 				setup_cpuspeed(5);
+				sysst.motor = 1;
+				xferFlag |= SYST_MOTOR;
 			}
 			break;
 		case 'S':	// Stop Tape
@@ -359,7 +434,6 @@ static void processXfer(void)
 		break;
 	}
 
-	close(confd);
 }
 
 //--------------------------------------------------------------
