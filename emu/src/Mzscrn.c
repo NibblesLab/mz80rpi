@@ -153,7 +153,7 @@ void update_scrn(void)
 	hw700.retrace=1;
 	
 	hw700.cursor_cou++;
-	if(hw700.cursor_cou>=60)													/* for japan.1/60 */
+	if(hw700.cursor_cou>=40)													/* for japan.1/60 */
 	{
 		hw700.cursor_cou=0;
 	}

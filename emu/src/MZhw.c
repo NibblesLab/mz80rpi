@@ -628,7 +628,7 @@ int mmio_in(int addr)
 		 * bit 6 - cursor blink timer
 		 * bit 7 - vertical blanking signal (retrace?)
 		 */
-		tmp=((hw700.cursor_cou%25>15) ? 0x40:0);						/* カーソル点滅タイマー */
+		tmp=((hw700.cursor_cou>19) ? 0x40:0);						/* カーソル点滅タイマー */
 		tmp|=cmt_read();
 		tmp=(((hw700.retrace^1)<<7)|(ts700.cmt_tstates<<4)|tmp|0x0F);
 		return tmp;
