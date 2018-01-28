@@ -2,47 +2,101 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" />
-    <title>PasocomMini MZ-80C YetAnotherEmulator</title>
-    <link rel="stylesheet" href={{ static_url("uistyle.css") }} />
-    <script type="text/javascript" src={{ static_url("scripts/backend.js") }}></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width">
+  <title>PasocomMini MZ-80C YetAnotherEmulator</title>
+  <link rel="stylesheet" href={{ static_url("css/home.css") }} />
+  <script type="text/javascript" src={{ static_url("scripts/home.js") }}></script>
+  <link rel="stylesheet" href={{ static_url("css/normalize.css") }} />
+  <link rel="stylesheet" href={{ static_url("css/component.css") }} />
+  <script src={{ static_url("scripts/modernizr.custom.js") }}></script>
 </head>
 <body>
-    <noscript>Javascriptを利用することができません。</noscript>
-    <div class="title">
-        <p><img src={{ static_url("pic/title.png") }} width="320" height="133" alt="PasocomMini MZ-80C YetAnotherEmulator"></p>
+  <noscript>Javascriptを利用することができません。</noscript>
+  <div id="st-container" class="st-container">
+		<nav class="st-menu st-effect-1" id="menu-1">
+			<h2>Menu</h2>
+			<ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="db.html">Data Base</a></li>
+        <li><a href="config.html">Configuration</a></li>
+			</ul>
+    </nav>
+    <div class="st-pusher">
+      <div class="st-content">
+        <div class="st-content-inner">
+          <div id="container_top">
+            <div id="st-trigger-effects" class="column">
+              <button data-effect="st-effect-1" id="menu-open"><img src={{ static_url("pic/menu.png") }} width="31" height="31" alt="Menu open"></button>
+            </div>
+            <button id="reload"><img src={{ static_url("pic/reload.png") }} width="31" height="31" alt="Reload"></button>
+          </div>
+          <div id="container_s">
+            <div class="title">
+              <img src={{ static_url("pic/title.png") }} width="320" height="133" alt="PasocomMini MZ-80C YetAnotherEmulator">
+            </div>
+            <div id="label-mode">MODE</div><div id="mode"></div>
+            <div id="label-mon">MON</div><div id="mon-rom"></div>
+            <div id="label-cg">CG</div><div id="cg-rom"></div>
+            <div id="label-cmt">CMT</div><div id="casset">Empty</div>
+            <div id="label-led">LED</div><div id="led"></div>
+            <div id="dummy1"></div>
+            <div id="progress_bar"><div class="frame"><div class="percent"></div></div></div>
+            <div class="separate_1">
+              <img src={{ static_url("pic/s_status.png") }} width="360" height="17" alt="STATUS area">
+            </div>
+          </div>
+          <div id="container_o">
+            <div id="control">
+              <button id="zrst">CPU Reset</button>
+              <label for="pcg1">PCG:</label>
+              <input type="radio" id="pcg1" name="pcg" value="pcg-on"><label for="pcg1">ON</label>
+              <input type="radio" id="pcg0" name="pcg" value="pcg-off" checked><label for="pcg0">OFF</label>
+            </div>
+            <div id="t_getl">Input:</div><input type="text" id="getl" /><button id="cr">CR</button>
+            <div id="onecmd">
+              <button id="load_cmd">LOAD</button><button id="run_cmd">RUN</button><button id="goto_cmd">GOTO$</button>
+            </div>
+            <button id="break">BREAK</button>
+            <button id="clr">CLR</button><button id="up"><img src={{ static_url("pic/up.png") }} width="28" height="28" alt="Up"></button><button id="inst">INST</button>
+            <button id="left"><img src={{ static_url("pic/left.png") }} width="28" height="28" alt="Left"></button><button id="right"><img src={{ static_url("pic/right.png") }} width="28" height="28" alt="Right"></button>
+            <button id="home">HOME</button><button id="down"><img src={{ static_url("pic/down.png") }} width="28" height="28" alt="Down"></button><button id="del">DEL</button>
+            <div class="separate_5">
+              <img src={{ static_url("pic/s_ope.png") }} width="360" height="17" alt="OPERATION area">
+            </div>
+          </div>
+          <div id="container_t">
+            <div id="cmt">
+              <button id="stop">STOP</button><button id="play">PLAY</button><button id="eject">EJECT</button>
+            </div>
+            <div id="t_imgname">Image Name:</div><select id="imgname" name="imgname"></select><button id="setcmt">SET</button>
+            <div id="t_attr">Attr:</div>
+            <div id="fattr">
+              <input type="radio" id="obj" name="fattr" value="obj" checked /><label for="obj">OBJ</label>
+              <input type="radio" id="btx" name="fattr" value="btx" /><label for="btx">BTX</label>
+              <input type="radio" id="bsd" name="fattr" value="bsd" /><label for="bsd">BSD</label>
+              <input type="radio" id="oth" name="fattr" value="oth" /><label for="oth">Other</label>
+            </div>
+            <div id="l_author">Author:</div><div id="d_author"></div>
+            <div id="l_source">Source:</div><div id="d_source"></div>
+            <div id="l_desc">Text:</div><div id="d_desc"></div>
+            <div class="separate_2">
+              <img src={{ static_url("pic/s_cmt.png") }} width="360" height="17" alt="CMT area">
+            </div>
+          </div>
+          <div id="container_l">
+            <div id="sys">
+              <button id="reboot">REBOOT</button><button id="sdown">SHUT DOWN</button>
+            </div>
+            <div class="separate_3">
+              <img src={{ static_url("pic/s_sys.png") }} width="360" height="17" alt="SYSTEM area">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="information">
-        <p>
-            CMT:<span id="casset">Empty</span>
-        </p>
-    </div>
-    <div id="progress_bar"><div class="percent"></div></div>
-    <div class="control">
-        <p>
-            <button id="zrst">CPU Reset</button>
-            <button id="pcg1">PCG ON</button>
-            <button id="pcg0" disabled >PCG OFF</button>
-        </p>
-    </div>
-    <div class="cmt">
-        <p>
-            <label for="cmtpath">テープイメージ：</label>
-            <input type="text" id="cmtpath" name="cmtpath" size="30" />
-            <button id="setcmt">SET</button>
-        </p>
-        <p>
-            <button id="stop">STOP</button>
-            <button id="play">PLAY</button>
-            <button id="eject">EJECT</button>
-        </p>
-    </div>
-    <div class="oneline">
-        <p>
-            <label for="getl">キー入力：</label>
-            <input type="text" id="getl" name="getl" size="20" />
-            <button id="cr">CR</button>
-        </p>
-    </div>
+  </div>
+  <script src={{ static_url("scripts/classie.js") }}></script>
+  <script src={{ static_url("scripts/sidebarEffects.js") }}></script>
 </body>
 </html>

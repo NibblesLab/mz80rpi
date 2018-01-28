@@ -8,9 +8,6 @@
 // Modified by Nibbles Lab./Oh!Ishi for mz80rpi
 //----------------------------------------------------------------------------
 
-//#include <windows.h>
-//#include "dprintf.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -21,9 +18,6 @@
 #include "mz80rpi.h"
 
 #include "z80.h"
-//#include "win.h"
-//#include "resource.h"
-//#include "fileio.h"
 #include "defkey.h"
 
 static UINT8 * keymattbl_ptr = NULL;
@@ -31,11 +25,11 @@ static int line;
 
 static BYTE *textptr;
 static int keymat_max;													// MAX of key-matrix menu
-//static HMENU hmenu;														// HANDLE of Keyboard Menu
 
 #define MAX_PATH 256
 static UINT8 KeyFileStr[MAX_PATH];										// キー定義ファイル名
 static TDEFKEY_SECTION defkey_section[KEY_MATRIX_BANK_MAX];
+extern char PROGRAM_PATH[MAX_PATH];
 
 //
 UINT8 * get_keymattbl_ptr(void)
@@ -408,8 +402,7 @@ int init_defkey(void)
 	memset(keymattbl_ptr, 0xFF, (KEY_MATRIX_BANK_MAX * 256));
 
 	// キー定義ファイル名の作成
-	getcwd((char *)KeyFileStr, sizeof(KeyFileStr));
-	strcat((char *)KeyFileStr, "/key.def");
+	sprintf((char *)KeyFileStr, "%s%s", PROGRAM_PATH, "/key.def");
 
 	// キー定義セクションステータスの作成
 	memset(defkey_section, 0, sizeof(defkey_section));

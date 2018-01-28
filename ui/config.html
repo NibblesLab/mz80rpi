@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width">
+  <title>Configuration - PasocomMini MZ-80C YetAnotherEmulator</title>
+  <link rel="stylesheet" href={{ static_url("css/config.css") }} />
+  <script type="text/javascript" src={{ static_url("scripts/config.js") }}></script>
+  <link rel="stylesheet" href={{ static_url("css/normalize.css") }} />
+  <link rel="stylesheet" href={{ static_url("css/component.css") }} />
+  <script src={{ static_url("scripts/modernizr.custom.js") }}></script>
+</head>
+<body>
+  <noscript>Javascriptを利用することができません。</noscript>
+  <div id="st-container" class="st-container">
+    <nav class="st-menu st-effect-1" id="menu-1">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="db.html">Data Base</a></li>
+        <li><a href="config.html">Configuration</a></li>
+      </ul>
+    </nav>
+    <div class="st-pusher">
+      <div class="st-content">
+        <div class="st-content-inner">
+          <div id="container_top">
+            <div id="st-trigger-effects" class="column">
+              <button data-effect="st-effect-1" id="menu-open"><img src={{ static_url("pic/menu.png") }} width="31" height="31" alt="Menu open"></button>
+            </div>
+            <button id="reload"><img src={{ static_url("pic/reload.png") }} width="31" height="31" alt="Reload"></button>
+            <div class="title">
+                <img src={{ static_url("pic/title2.png") }} width="320" height="32" alt="PasocomMini MZ-80C YetAnotherEmulator">
+            </div>
+            <div id="message"></div>
+          </div>
+          <div id="container_c">
+            <div id="s_setting">Select setting:</div><select id="setname" name="setname"></select><button id="selset">RECALL</button>
+            <div id="s_name">Label Name:</div><input type="text" id="c_name" />
+            <div id="s_monimg">Monitor ROM:</div><select id="monimg" name="monimg"></select>
+            <div id="s_cgimg">CG ROM:</div><select id="cgimg" name="cgimg"></select>
+            <div id="l_color">CRT Color:</div>
+            <div id="s_color">
+              <input type="radio" id="bw" name="s_color" value="0" /><label for="bw">B/W</label>
+              <input type="radio" id="green" name="s_color" value="1" /><label for="green">Green</label>
+            </div>
+            <div id="l_mode">Start Up:</div>
+            <div id="s_mode">
+              <input type="radio" id="s_yes" name="s_mode" value="1" /><label for="s_yes">Yes</label>
+              <input type="radio" id="s_no" name="s_mode" value="0" /><label for="s_no">No</label>
+            </div>
+            <div id="s_button1">
+                <button id="s_delete">DELETE</button><button id="s_cancel">CANCEL</button><button id="s_apply">APPLY</button>
+            </div>
+            <div id="s_button2">
+                <button id="s_new">NEW SAVE</button><button id="s_update">UPDATE</button>
+            </div>
+            <div class="separate_4">
+              <img src={{ static_url("pic/s_config.png") }} width="360" height="17" alt="CONFIGURE area">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src={{ static_url("scripts/classie.js") }}></script>
+  <script src={{ static_url("scripts/sidebarEffects.js") }}></script>
+</body>
+</html>

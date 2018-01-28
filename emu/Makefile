@@ -1,7 +1,8 @@
 OBJS = Mzmain.o Mzscrn.o MZhw.o Defkey.o mzbeep.o
 Z80OBJS = ./z80/z80.o ./z80/z80debug.o
 CC = gcc
-CFLAGS = -Wall -O2 -std=gnu99 -pthread -D_DEBUG -c
+#CFLAGS = -Wall -O2 -std=gnu99 -pthread -D_DEBUG -c
+CFLAGS = -Wall -O2 -std=gnu99 -pthread -c
 INCLUDES = -I./inc -I./z80
 LIBS = -L/usr/lib -L/usr/local/lib
 LDFLAGS = -lrt -lpthread -pthread

@@ -33,6 +33,9 @@ static int ssize;
 #define YOFFSET (640*30)
 int bpp, pitch;
 
+uint16_t c_bright;
+#define c_dark 0x0000
+
 /*
  * 表示画面の初期化
  */
@@ -104,10 +107,7 @@ int font_load(const char *fontfile)
 	FILE *fdfont;
 	int dcode, line, bit;
 	int ch;
-	uint16_t c_bright, c_dark, color;
-
-	c_bright = 0x07e0;	// GREEN
-	c_dark = 0x0000;
+	uint16_t color;
 
 	// CG-ROMデータ
 	fdfont = fopen(fontfile, "r");
