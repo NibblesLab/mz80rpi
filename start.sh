@@ -1,10 +1,10 @@
 #!/bin/bash
 # data folder check
-if [ ! -a ./emu/data ]; then
+if [ ! -d ./emu/data ]; then
     mkdir ./emu/data
 fi
 # db file check
-if [ ! -a ./ui/mz80rpi.db ]; then
+if [ ! -r ./ui/mz80rpi.db ]; then
     cd ui; python3 makedb.py; cd ..
 fi
 # launch the emulator
