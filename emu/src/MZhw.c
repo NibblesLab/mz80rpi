@@ -104,7 +104,7 @@ void set_mztData(char *mztFile)
 			mzt_buf[mzt_buf_tmp++] = pwmTable[tmp_buf[i]][1];
 			sum += pwmTable[tmp_buf[i]][2];
 		}
-		printf("sum=%X, pos=%d\n",sum,mzt_buf_tmp);
+		//printf("sum=%X, pos=%d\n",sum,mzt_buf_tmp);
 		mzt_buf[mzt_buf_tmp++] = pwmTable[(sum >> 8) & 0xff][1];
 		mzt_buf[mzt_buf_tmp++] = pwmTable[sum & 0xff][1];
 /*		mzt_buf[mzt_buf_tmp++] = 0xD5555540;
@@ -157,7 +157,7 @@ void set_mztData(char *mztFile)
 		mzt_buf[mzt_buf_tmp++] = 0xC0000000;
 	}
 	ts700.mzt_bsize = mzt_buf_tmp;
-	printf("MZT size:%d\n", ts700.mzt_bsize);
+	//printf("MZT size:%d\n", ts700.mzt_bsize);
 	ts700.mzt_elapse = 0;
 	ts700.mzt_settape = 1;
 	sysst.tape = 0;
@@ -196,7 +196,7 @@ void mz_keydown(int code)
 
 	if (kptr[code]==0xFF) return;
 
-#if _DEBUG	
+#if _DEBUG
 	if ( Z80_Trace ) return;
 #endif
 
@@ -628,7 +628,7 @@ int mmio_in(int addr)
 		 * bit 6 - cursor blink timer
 		 * bit 7 - vertical blanking signal (retrace?)
 		 */
-		tmp=((hw700.cursor_cou%25>15) ? 0x40:0);						/* カーソル点滅タイマー */
+		tmp=((hw700.cursor_cou>19) ? 0x40:0);						/* カーソル点滅タイマー */
 		tmp|=cmt_read();
 		tmp=(((hw700.retrace^1)<<7)|(ts700.cmt_tstates<<4)|tmp|0x0F);
 		return tmp;
@@ -729,7 +729,12 @@ void mmio_out(int addr,int val)
 		 */
 		hw700.vgate = val & 0x01;
 		hw700.wdata = val & 0x02;
-		hw700.led = val & 0x04;
+		if (hw700.led != (val & 0x04))
+		{
+			hw700.led = val & 0x04;
+			sysst.led = hw700.led == 0 ? 1 : 2;
+			xferFlag |= SYST_LED;
+		}
 		if(hw700.motor == 0 && (val & 0x08) != 0)	// 0->1変化時のみ有効
 		{
 			if(ts700.cmt_tstates == 0)
@@ -783,7 +788,12 @@ void mmio_out(int addr,int val)
 				break;
 
 			case 2:
-				hw700.led = 4;
+				if(hw700.led != 4)
+				{
+					hw700.led = 4;
+					sysst.led = 2;
+					xferFlag |= SYST_LED;
+				}
 				break;
 
 			case 3:
@@ -833,7 +843,12 @@ void mmio_out(int addr,int val)
 				break;
 
 			case 2:
-				hw700.led = 0;
+				if(hw700.led != 0)
+				{
+					hw700.led = 0;
+					sysst.led = 1;
+					xferFlag |= SYST_LED;
+				}
 				break;
 
 			case 3:

@@ -1,0 +1,138 @@
+#container_top {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 31px 298px 31px;  /* 360px */
+    grid-template-areas:
+        "menu  space reload"
+        "title title title "
+        "msg   msg   msg   ";
+}
+
+#menu-open {
+    grid-area: menu;
+    border-style: none;
+    background-color: #ffffff;
+    padding: 0px;
+}
+#reload {
+    grid-area: reload;
+    border-style: none;
+    background-color: #ffffff;
+    padding: 0px;
+}
+
+.title {
+    grid-area: title;
+    margin: 0 auto;
+}
+
+#message {
+    grid-area: msg;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    color: blue;
+}
+
+#container_d {
+    display: grid;
+    justify-content: center;
+    grid-row-gap: 3px;
+    grid-template-columns: 60px 300px;  /* 360px */
+    grid-template-areas:
+        "sep3  sep3 "
+        "fsel   fsel  "
+        "l_enam l_enam"
+        "d_enam d_enam"
+        "l_etyp s_etyp"
+        "l_eatr s_eatr"
+        "l_eath l_eath"
+        "d_eath d_eath"
+        "l_esrc l_esrc"
+        "d_esrc d_esrc"
+        "l_edsc l_edsc"
+        "d_edsc d_edsc"
+        "d_ebtn d_ebtn";
+}
+
+.separate_3 {
+    grid-area: sep3;
+    height: 20px;
+    padding: 0px 0px 3px;
+}
+
+#db_selfunc {
+    grid-area: fsel;
+}
+
+#newitem {
+    font-size: 1.0em;
+}
+#edititem {
+    font-size: 1.0em;
+}
+#file {
+    font-size: 0.8em;
+}
+#e_imgname {
+    font-size: 1.0em;
+}
+#setitem {
+    font-size: 1.0em;
+}
+
+#t_name {
+    grid-area: l_enam;
+}
+#e_name {
+    grid-area: d_enam;
+}
+
+#t_ftype {
+    grid-area: l_etyp;
+}
+#e_ftype {
+    grid-area: s_etyp;
+}
+
+#t_fattr {
+    grid-area: l_eatr;
+}
+#e_fattr {
+    grid-area: s_eatr;
+}
+
+#t_author {
+    grid-area: l_eath;
+}
+#e_author {
+    grid-area: d_eath;
+}
+
+#t_source {
+    grid-area: l_esrc;
+}
+#e_source {
+    grid-area: d_esrc;
+}
+
+#t_desc {
+    grid-area: l_edsc;
+}
+#e_desc {
+    grid-area: d_edsc;
+}
+
+#e_button {
+    grid-area: d_ebtn;
+    margin: 0 auto;
+}
+#e_delete {
+    font-size: 1.0em;
+}
+#e_cancel {
+    font-size: 1.0em;
+}
+#e_exec {
+    font-size: 1.0em;
+}

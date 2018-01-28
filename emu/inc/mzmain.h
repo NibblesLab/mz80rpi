@@ -75,7 +75,7 @@ extern "C" {
 // System status
 typedef struct
 {
-    int     led;    // 英数/カナLEDの状態 0=英数(緑) 1=カナ(赤)
+    int     led;    // 英数/カナLEDの状態 0=非搭載 1=カナ(赤) 2=英数(緑)
     int     tape;   // テープの走行進捗(0-100%)
     int     motor;  // CMTのモーター 0=off 1=on
 } SYS_STATUS;
@@ -85,6 +85,8 @@ typedef struct
 #define SYST_LED    0x00000001
 #define SYST_CMT    0x00000002
 #define SYST_MOTOR  0x00000004
+#define SYST_PCG    0x00000008
+#define SYST_BOOTUP 0x80000000
 
 //------------------
 int mz_alloc_mem(void);
