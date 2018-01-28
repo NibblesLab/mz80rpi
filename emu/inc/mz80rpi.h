@@ -1,3 +1,4 @@
+/* $Id: mz80rpi.h 20 2009-05-25 18:20:32Z maru $ */
 
 /* Typedef */
 typedef	unsigned int UINT32;
