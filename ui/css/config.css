@@ -1,0 +1,117 @@
+#container_top {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 31px 298px 31px;  /* 360px */
+    grid-template-areas:
+        "menu  space reload"
+        "title title title "
+        "msg   msg   msg   ";
+}
+
+#menu-open {
+    grid-area: menu;
+    border-style: none;
+    background-color: #ffffff;
+    padding: 0px;
+}
+#reload {
+    grid-area: reload;
+    border-style: none;
+    background-color: #ffffff;
+    padding: 0px;
+}
+
+.title {
+    grid-area: title;
+    margin: 0 auto;
+}
+
+#message {
+    grid-area: msg;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    color: blue;
+}
+
+#container_c {
+    display: grid;
+    justify-content: center;
+    grid-row-gap: 3px;
+    grid-template-columns: 100px 185px 75px;  /* 360px */
+    grid-template-areas:
+        "sep4   sep4   sep4  "
+        "l_dset l_dset l_dset"
+        "d_dset d_dset b_dset"
+        "l_enam l_enam l_enam"
+        "d_enam d_enam d_enam"
+        "l_mon  l_mon  l_mon "
+        "d_mon  d_mon  d_mon "
+        "l_cg   l_cg   l_cg  "
+        "d_cg   d_cg   d_cg  "
+        "l_col  s_col  s_col "
+        "l_mod  s_mod  s_mod "
+        "s_btn1 s_btn1 s_btn1"
+        "s_btn2 s_btn2 s_btn2";
+}
+
+.separate_4 {
+    grid-area: sep4;
+    height: 23px;
+    padding: 3px 0px 3px;
+}
+
+#s_setting {
+    grid-area: l_dset;
+}
+#setname {
+    grid-area: d_dset;
+}
+#selset {
+    grid-area: b_dset;
+    font-size: 1.0em;
+}
+
+#s_name {
+    grid-area: l_enam;
+}
+#c_name {
+    grid-area: d_enam;
+}
+
+#s_monimg {
+    grid-area: l_mon;
+}
+#monimg {
+    grid-area: d_mon;
+}
+
+#s_cgimg {
+    grid-area: l_cg;
+}
+#cgimg {
+    grid-area: d_cg;
+}
+
+#l_color {
+    grid-area: l_col;
+}
+#s_color {
+    grid-area: s_col;
+}
+
+#l_mode {
+    grid-area: l_mod;
+}
+#s_mode {
+    grid-area: s_mod;
+}
+
+#s_button1 {
+    grid-area: s_btn1;
+    margin: 0 auto;
+}
+#s_button2 {
+    grid-area: s_btn2;
+    margin: 0 auto;
+}

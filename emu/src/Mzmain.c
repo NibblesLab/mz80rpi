@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <libgen.h>
 #include "mz80rpi.h"
 
 #include "z80.h"
@@ -47,9 +48,6 @@ void *scrn_thread(void *arg);
 static pthread_t keyin_thread_id;
 void *keyin_thread(void *arg);
 
-//#define	SOCK_PATH	"/tmp/cmdxfer"
-//int sockfd;
-//struct sockaddr_un s_addr;
 #define	FIFO_i_PATH	"/tmp/cmdxfer"
 #define	FIFO_o_PATH	"/tmp/stsxfer"
 int fifo_i_fd, fifo_o_fd;
@@ -68,8 +66,8 @@ typedef struct KBDMSG_t {
 } KBDMSG;
 const unsigned char ak_tbl[] =
 {
-	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+	0xff, 0xff, 0xff, 0x80, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x84, 0xff, 0xff,
+	0xff, 0x92, 0x80, 0x83, 0x80, 0x90, 0x80, 0x81, 0x80, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0x91, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x73, 0x05, 0x64, 0x74,
 	0x14, 0x00, 0x10, 0x01, 0x11, 0x02, 0x12, 0x03, 0x13, 0x04, 0x80, 0x54, 0x80, 0x25, 0x80, 0x80,
 	0x80, 0x40, 0x62, 0x61, 0x41, 0x21, 0x51, 0x42, 0x52, 0x33, 0x43, 0x53, 0x44, 0x63, 0x72, 0x24,
@@ -79,8 +77,8 @@ const unsigned char ak_tbl[] =
 };
 const unsigned char ak_tbl_s[] =
 {
-	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+	0xff, 0xff, 0xff, 0x93, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+	0xff, 0xff, 0x92, 0xff, 0x83, 0xff, 0x90, 0xff, 0x81, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0x00, 0x10, 0x01, 0x11, 0x02, 0x12, 0x03, 0x13, 0x04, 0x25, 0x05, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x24, 0xff, 0x20, 0xff, 0x30, 0x33,
 	0x23, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -88,6 +86,14 @@ const unsigned char ak_tbl_s[] =
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 };
+
+#define MAX_PATH 256
+char PROGRAM_PATH[MAX_PATH];
+char FDROM_PATH[MAX_PATH];
+char MONROM_PATH[MAX_PATH];
+char CGROM_PATH[MAX_PATH];
+
+extern uint16_t c_bright;
 
 //------------------------------------------------
 // Memory Allocation for MZ
@@ -168,51 +174,26 @@ void mz_free_mem(void)
 //--------------------------------------------------------------
 // ＲＯＭモニタを読み込む
 //--------------------------------------------------------------
-int rom_load(void)
+void monrom_load(void)
 {
 	FILE *in;
-	int result = MON_EMUL;
 
-	rom2_mode = MON_EMUL;
-
-	if((in = fopen("/home/pi/mz80rpi/emu/fdif.rom", "r")) != NULL)
-	{
-		fread(mem + ROM2_START, sizeof(unsigned char), 1024, in);
-		fclose(in);
-		rom2_mode = MON_80FIO;
-	}
-
-	if((in = fopen("/home/pi/mz80rpi/emu/ipl.rom", "r")) != NULL)
+	if((in = fopen(MONROM_PATH, "r")) != NULL)
 	{
 		fread(mem, sizeof(unsigned char), 4096, in);
 		fclose(in);
-		result = set_romtype();
 	}
-
-	/* フォントデータを読み込む */
-	if(font_load("/home/pi/mz80rpi/emu/font.rom") < 0)
-	{
-		perror("Couldn't load font data.");
-		mz_exit(1);
-	}
-	
-	return result;
 }
 
-// モニタＲＯＭタイプを判別し、rom1_modeをセット
-int set_romtype(void)
+void fdrom_load(void)
 {
-	if (!strncmp((char *)(mem+0x14D), "SP-1002", 7))
-	{
-		return MON_SP1002;
-	}
-	else
-	if (!strncmp((char *)(mem+0x144), "MZ\x90MONITOR", 10))
-	{
-		return MON_NEWMON80K;
-	}
+	FILE *in;
 
-	return MON_OTHERS;
+	if((in = fopen(FDROM_PATH, "r")) != NULL)
+	{
+		fread(mem + ROM2_START, sizeof(unsigned char), 1024, in);
+		fclose(in);
+	}
 }
 
 //--------------------------------------------------------------
@@ -220,19 +201,9 @@ int set_romtype(void)
 //--------------------------------------------------------------
 void mz_mon_setup(void)
 {
-	FILE *fd;
-
 	memset(mem, 0xFF, 64*1024);
 	memset(mem+RAM_START, 0, 48*1024);
 	memset(mem+VID_START, 0, 1024);
-
-	// ROMモニタの読み込み
-	rom1_mode = rom_load();
-
-	fd = fopen("/home/pi/mz80rpi/emu/Sp-5030.mzt", "r");
-	fseek(fd, 0x80, SEEK_SET);
-	fread(mem+0x1200, sizeof(unsigned char), 12361-128, fd);
-	fclose(fd);
 }
 
 //--------------------------------------------------------------
@@ -252,37 +223,6 @@ static int setupXfer(void)
 	// 外部プログラムへ出力
 	mkfifo(FIFO_o_PATH, 0777);
 
-/*
-	// UNIXドメインソケットの生成
-	sockfd = socket(AF_UNIX, SOCK_STREAM|SOCK_NONBLOCK, 0);
-	if(sockfd == -1)
-	{
-		perror("socket");
-		return -1;
-	}
-
-	// ソケット用のパスを消しておく
-	if(remove(SOCK_PATH) == -1 && errno != ENOENT)
-	{
-		perror("remove SOCK_PATH");
-		return -1;
-	}
-
-	// バインドと待ち受け
-	memset(&s_addr, 0, sizeof(struct sockaddr_un));
-	s_addr.sun_family = AF_UNIX;
-	strncpy(s_addr.sun_path, SOCK_PATH, sizeof(s_addr.sun_path) - 1);
-	if(bind(sockfd, (struct sockaddr *)&s_addr, sizeof(struct sockaddr_un)) == -1)
-	{
-		perror("bind");
-		return -1;
-	}
-	if(listen(sockfd, 5) == -1)
-	{
-		perror("listen");
-		return -1;
-	}
-*/
 	return 0;
 }
 
@@ -309,6 +249,36 @@ static int statusXfer(void)
 		sprintf(&sdata[pos], "CM%1d", sysst.motor);
 		pos += 4;
 		xferFlag &= ~SYST_MOTOR;
+	}
+	if(xferFlag & SYST_LED)
+	{
+		if(pos != 0)
+		{
+			sdata[pos - 1] = ',';
+		}
+		sprintf(&sdata[pos], "LM%1d", sysst.led);
+		pos += 4;
+		xferFlag &= ~SYST_LED;
+	}
+	if(xferFlag & SYST_BOOTUP)
+	{
+		if(pos != 0)
+		{
+			sdata[pos - 1] = ',';
+		}
+		sprintf(&sdata[pos], "BU");
+		pos += 3;
+		xferFlag &= ~SYST_BOOTUP;
+	}
+	if(xferFlag & SYST_PCG)
+	{
+		if(pos != 0)
+		{
+			sdata[pos - 1] = ',';
+		}
+		sprintf(&sdata[pos], "GM%1d", hw700.pcg8000_mode);
+		pos += 4;
+		xferFlag &= ~SYST_PCG;
 	}
 
 	if(pos != 0)
@@ -341,7 +311,10 @@ static void processXfer(void)
 	int num;
 	unsigned char ch, cmd[80];
 	KBDMSG kbdm;
+	static int runmode = 0;
+	char str[MAX_PATH];
 
+REPEAT:
 	// 予約されたステータス送信処理
 	statusXfer();
 
@@ -351,11 +324,11 @@ static void processXfer(void)
 	memset(cmd, 0, 80);
 	if(read(fifo_i_fd, &cmd[0], 1) <= 0)	// 受信データチェック
 	{
-		return;
+		goto EXIT;
 	}
 	if(cmd[0] == 0)	// 先頭がゼロなら無効行
 	{
-		return;
+		goto EXIT;
 	}
 	while(ch != 0)
 	{
@@ -366,7 +339,7 @@ static void processXfer(void)
 		}
 		cmd[num++] = ch;
 	}
-	printf("recieved:%s\n", cmd);
+	//printf("recieved:%s\n", cmd);
 	num = strlen((char *)cmd);
 
 	switch(cmd[0])
@@ -380,7 +353,8 @@ static void processXfer(void)
 		case 'T':	// Set Tape
 			if(ts700.cmt_tstates == 0)
 			{
-				set_mztData((char *)&cmd[2]);
+				sprintf(str, "%s/%s", PROGRAM_PATH, (char *)&cmd[2]);
+				set_mztData(str);
 				ts700.cmt_play = 0;
 			}
 			break;
@@ -430,10 +404,50 @@ static void processXfer(void)
 		memcpy(kbdm.msg, &cmd[1], num);
 		msgsnd(q_kbd, &kbdm, 81, IPC_NOWAIT);
 		break;
+	case 'S':	// Set/Echo status
+		switch(cmd[1])
+		{
+		case 'R':	// Run
+			runmode = 1;
+			break;
+		case 'S':	// Stop
+			runmode = 0;
+			break;
+		case 'M':	// Monitor ROM
+			sprintf(MONROM_PATH, "%s/%s", PROGRAM_PATH, (char *)&cmd[2]);
+			monrom_load();
+			break;
+		case 'F':	// Font ROM
+			sprintf(CGROM_PATH, "%s/%s", PROGRAM_PATH, (char *)&cmd[2]);
+			font_load(CGROM_PATH);
+			break;
+		case 'C':	// CRT color
+			if(cmd[2] == '0')
+			{
+				c_bright = 0xf7df;	// WHITE
+			}
+			else if(cmd[2] == '1')
+			{
+				c_bright = 0x07e0;	// GREEN
+			}
+			break;
+		case 'E':	// Echo
+			xferFlag |= SYST_PCG|SYST_LED|SYST_CMT|SYST_MOTOR;
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}
 
+EXIT:
+	if(runmode == 0)
+	{
+		usleep(3000);
+		goto REPEAT;
+	}
 }
 
 //--------------------------------------------------------------
@@ -460,11 +474,15 @@ void mz_exit(int arg)
 int main(int argc, char *argv[])
 {
 	struct sigaction sa;
+	char tmpPathStr[MAX_PATH];
 
 	sigaction(SIGINT, NULL, &sa);
 	sa.sa_handler = sighandler;
 	sa.sa_flags = SA_NODEFER;
 	sigaction(SIGINT, &sa, NULL);
+
+	readlink("/proc/self/exe", tmpPathStr, sizeof(tmpPathStr));
+	sprintf(PROGRAM_PATH, "%s", dirname(tmpPathStr));
 
 	mz_screen_init();
 	mz_alloc_mem();
@@ -516,6 +534,7 @@ void mainloop(void)
 //	Z80_Trap = 0x0556;
 
 	w.tv_sec = 0;
+	xferFlag |= SYST_BOOTUP;
 
 	// start the CPU emulation
 	while(!intByUser())
@@ -538,10 +557,12 @@ void mainloop(void)
 			nanosleep(&w, NULL);
 		}
 
+#if _DEBUG
 		if (Z80_Trace)
 		{
 			usleep(1000000);
 		}
+#endif
 	}
 //	
 }
@@ -711,7 +732,6 @@ void * keyin_thread(void *arg)
 					mz_keydown_sub(ak_tbl_s[kbdm.msg[i]]);
 					usleep(60000);
 					mz_keyup_sub(ak_tbl_s[kbdm.msg[i]]);
-					usleep(60000);
 					mz_keyup_sub(ak_tbl[kbdm.msg[i]]);
 					usleep(60000);
 				}
@@ -723,10 +743,6 @@ void * keyin_thread(void *arg)
 					usleep(60000);
 				}
 			}
-			mz_keydown_sub(0x84);	// CR
-			usleep(60000);
-			mz_keyup_sub(0x84);
-			usleep(60000);
 		}
 		usleep(10000);
 	}

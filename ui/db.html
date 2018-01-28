@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width">
+  <title>Data Base - PasocomMini MZ-80C YetAnotherEmulator</title>
+  <link rel="stylesheet" href={{ static_url("css/db.css") }} />
+  <script type="text/javascript" src={{ static_url("scripts/db.js") }}></script>
+  <link rel="stylesheet" href={{ static_url("css/normalize.css") }} />
+  <link rel="stylesheet" href={{ static_url("css/component.css") }} />
+  <script src={{ static_url("scripts/modernizr.custom.js") }}></script>
+</head>
+<body>
+  <noscript>Javascriptを利用することができません。</noscript>
+  <div id="st-container" class="st-container">
+		<nav class="st-menu st-effect-1" id="menu-1">
+			<h2>Menu</h2>
+			<ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="db.html">Data Base</a></li>
+        <li><a href="config.html">Configuration</a></li>
+			</ul>
+    </nav>
+    <div class="st-pusher">
+      <div class="st-content">
+        <div class="st-content-inner">
+          <div id="container_top">
+            <div id="st-trigger-effects" class="column">
+              <button data-effect="st-effect-1" id="menu-open"><img src={{ static_url("pic/menu.png") }} width="31" height="31" alt="Menu open"></button>
+            </div>
+            <button id="reload"><img src={{ static_url("pic/reload.png") }} width="31" height="31" alt="Reload"></button>
+            <div class="title">
+                <img src={{ static_url("pic/title2.png") }} width="320" height="32" alt="PasocomMini MZ-80C YetAnotherEmulator">
+            </div>
+            <div id="message"></div>
+          </div>
+          <div id="container_d">
+            <div id="db_selfunc"></div>
+            <div id="t_name">Image Name:</div><input type="text" id="e_name" />
+            <div id="t_ftype">Type:</div>
+            <div id="e_ftype">
+              <input type="radio" id="k_mzt" name="e_ftype" value="mzt" /><label for="k_mzt">MZT</label>
+              <input type="radio" id="k_rom" name="e_ftype" value="rom" /><label for="k_rom">ROM</label>
+            </div>
+            <div id="t_fattr">Attr:</div>
+            <div id="e_fattr">
+              <input type="radio" id="a_obj" name="e_fattr" value="obj" /><label for="a_obj">OBJ</label>
+              <input type="radio" id="a_btx" name="e_fattr" value="btx" /><label for="a_btx">BTX</label>
+              <input type="radio" id="a_bsd" name="e_fattr" value="bsd" /><label for="a_bsd">BSD</label>
+              <input type="radio" id="a_oth" name="e_fattr" value="oth" /><label for="a_oth">Other</label>
+            </div>
+            <div id="t_author">Author:</div><input type="text" id="e_author" />
+            <div id="t_source">Source:</div><input type="text" id="e_source" />
+            <div id="t_desc">Text:</div><textarea id="e_desc"></textarea>
+            <div id="e_button">
+              <button id="e_delete">DELETE</button><button id="e_cancel">CANCEL</button><button id="e_exec">SAVE</button>
+            </div>
+            <div class="separate_3">
+                <img src={{ static_url("pic/s_db.png") }} width="360" height="17" alt="DATA BASE area">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src={{ static_url("scripts/classie.js") }}></script>
+  <script src={{ static_url("scripts/sidebarEffects.js") }}></script>
+</body>
+</html>

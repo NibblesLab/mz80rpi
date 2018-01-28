@@ -54,6 +54,7 @@ typedef struct
 	int		mzt_start;
 	int		mzt_elapse;
 	int		mzt_bsize;
+	int		mzt_percent;
 	int		mzt_settape;
 } T700_TS;
 

@@ -1,0 +1,357 @@
+#container_top {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 31px 298px 31px;  /* 360px */
+    grid-template-areas:
+        "menu space reload";
+}
+
+#menu-open {
+    grid-area: menu;
+    border-style: none;
+    background-color: #ffffff;
+    padding: 0px;
+}
+#reload {
+    grid-area: reload;
+    border-style: none;
+    background-color: #ffffff;
+    padding: 0px;
+}
+
+#container_s {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 50px 130px 50px 53px 50px 27px;  /* 360px */
+    grid-template-areas:
+        "title title title title title title"
+        "sep1  sep1  sep1  sep1  sep1  sep1 "
+        "l-mod t-mod t-mod t-mod t-mod t-mod"
+        "l-mon t-mon l-cg  t-cg  t-cg  t-cg "
+        "l-cmt t-cmt t-cmt t-cmt l-led i-led"
+        "dmy1  dmy1  dmy1  dmy1  dmy1  dmy1 "
+        "progr progr progr progr progr progr";
+}
+
+.title {
+    grid-area: title;
+    margin: 0 auto;
+}
+
+.separate_1 {
+    grid-area: sep1;
+    height: 20px;
+    padding: 0px 0px 3px;
+}
+
+#label-mode {
+    grid-area: l-mod;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+}
+
+#mode {
+    grid-area: t-mod;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-bottom: none;
+}
+
+#label-mon {
+    grid-area: l-mon;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+}
+
+#mon-rom {
+    grid-area: t-mon;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-bottom: none;
+}
+
+#label-cg {
+    grid-area: l-cg;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+}
+
+#cg-rom {
+    grid-area: t-cg;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-bottom: none;
+}
+
+#label-cmt {
+    grid-area: l-cmt;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+}
+
+#casset {
+    grid-area: t-cmt;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+}
+
+#label-led {
+    grid-area: l-led;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+}
+
+#led {
+    grid-area: i-led;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #ffffff;
+}
+
+#dummy1 {
+    grid-area: dmy1;
+    height: 10px;
+}
+
+#progress_bar {
+    grid-area: progr;
+    height: 17px;
+}
+
+#progress_bar .frame {
+    grid-area: progr;
+    margin: 0 auto;
+    opacity: 0;
+    width: 320px;
+}
+
+#progress_bar .percent {
+    grid-area: progr;
+    background-color: #808080;
+    height: 9px;
+    width: 0%;
+}
+
+#container_o {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 30px  30px   30px   60px   60px   60px    30px   30px   30px;  /* 360px */
+    grid-row-gap: 3px;
+    grid-template-areas:
+        "sep5  sep5   sep5   sep5   sep5   sep5    sep5   sep5   sep5 "
+        "cntl  cntl   cntl   cntl   cntl   cntl    cntl   cntl   cntl "
+        "l_inp l_inp  l_inp  l_inp  l_inp  l_inp   l_inp  l_inp  l_inp"
+        "d_inp d_inp  d_inp  d_inp  d_inp  d_inp   d_inp  b_inp  b_inp"
+        "skey  skey   skey   skey   skey   skey    b_brk  b_brk  b_brk"
+        "..... b_clr  b_clr  ...... b_up   ....... b_inst b_inst ....."
+        "..... ...... ...... b_left b_up   b_right ...... ...... ....."
+        "..... ...... ...... b_left b_down b_right ...... ...... ....."
+        "..... b_home b_home ...... b_down ....... b_del  b_del  .....";
+}
+
+.separate_5 {
+    grid-area: sep5;
+    height: 20px;
+    padding: 0px 0px 3px;
+}
+
+#control {
+    grid-area: cntl;
+    margin: 0 auto;
+}
+#zrst {
+    font-size: 1.0em;
+}
+
+#t_getl {
+    grid-area: l_inp;
+}
+#getl {
+    grid-area: d_inp;
+    font-size: 1.0em;
+}
+#cr {
+    grid-area: b_inp;
+    font-size: 1.0em;
+}
+
+#onecmd {
+    grid-area: skey;
+    margin: 0 auto;
+}
+#load_cmd {
+    font-size: 1.0em;
+}
+#run_cmd {
+    font-size: 1.0em;
+}
+#goto_cmd {
+    font-size: 1.0em;
+}
+
+#break {
+    grid-area: b_brk;
+    margin: 0 auto;
+    font-size: 1.0em;
+}
+
+#clr {
+    grid-area: b_clr;
+    font-size: 1.0em;
+}
+#up {
+    grid-area: b_up;
+}
+#inst {
+    grid-area: b_inst;
+    font-size: 1.0em;
+}
+#left {
+    grid-area: b_left;
+}
+#right {
+    grid-area: b_right;
+}
+#home {
+    grid-area: b_home;
+    font-size: 1.0em;
+}
+#down {
+    grid-area: b_down;
+}
+#del {
+    grid-area: b_del;
+    font-size: 1.0em;
+}
+
+#container_t {
+    display: grid;
+    justify-content: center;
+    grid-row-gap: 3px;
+    grid-template-columns: 60px 240px 60px;  /* 360px */
+    grid-template-areas:
+        "sep2  sep2  sep2 "
+        "t_btn t_btn t_btn"
+        "t_atr s_atr s_atr"
+        "l_img l_img l_img"
+        "d_img d_img b_img"
+        "l_ath l_ath l_ath"
+        "d_ath d_ath d_ath"
+        "l_src l_src l_src"
+        "d_src d_src d_src"
+        "l_dsc l_dsc l_dsc"
+        "d_dsc d_dsc d_dsc";
+}
+
+.separate_2 {
+    grid-area: sep2;
+    height: 20px;
+    padding: 3px 0px 0px;
+}
+
+#cmt {
+    grid-area: t_btn;
+    margin: 0 auto;
+}
+#stop {
+    font-size: 1.0em;
+}
+#play {
+    font-size: 1.0em;
+}
+#eject {
+    font-size: 1.0em;
+}
+
+#t_imgname {
+    grid-area: l_img;
+}
+#imgname {
+    grid-area: d_img;
+    font-size: 1.0em;
+}
+#setcmt {
+    grid-area: b_img;
+    font-size: 1.0em;
+}
+
+#t_attr {
+    grid-area: t_atr;
+}
+#fattr {
+    grid-area: s_atr;
+}
+
+#l_author {
+    grid-area: l_ath;
+}
+#d_author {
+    grid-area: d_ath;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cccccc;
+}
+#l_source {
+    grid-area: l_src;
+}
+#d_source {
+    grid-area: d_src;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cccccc;
+}
+#l_desc {
+    grid-area: l_dsc;
+}
+#d_desc {
+    grid-area: d_dsc;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cccccc;
+}
+
+#container_l {
+    display: grid;
+    justify-content: center;
+    grid-row-gap: 3px;
+    grid-template-columns: 360px;
+    grid-template-areas:
+        "sep3 "
+        "s_btn";
+}
+
+.separate_3 {
+    grid-area: sep3;
+    height: 20px;
+    padding: 3px 0px 0px;
+}
+
+#sys {
+    grid-area: s_btn;
+    margin: 0 auto;
+}
+#reboot {
+    font-size: 1.0em;
+}
+#sdown {
+    font-size: 1.0em;
+}
