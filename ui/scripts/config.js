@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('c_name').addEventListener('keyup', function(e) {
         if ( document.getElementById('c_name').value == "" ) {
-            document.getElementById('s_apply').disabled = true;
             document.getElementById('s_new').disabled = true;
         } else {
             if ( (document.getElementById('bw').checked | document.getElementById('green').checked) & (document.getElementById('s_yes').checked | document.getElementById('s_no').checked) ) {
@@ -107,30 +106,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, false);
     document.getElementById('bw').addEventListener('change', function(e) {
-        if ( document.getElementById('c_name').value != "" & (document.getElementById('s_yes').checked | document.getElementById('s_no').checked) ) {
-            document.getElementById('s_apply').disabled = false;
-            document.getElementById('s_new').disabled = false;
+        document.getElementById('s_apply').disabled = false;
+        if ( (document.getElementById('s_yes').checked | document.getElementById('s_no').checked) ) {
+            if ( document.getElementById('c_name').value != "" ) {
+                document.getElementById('s_new').disabled = false;
+            }
         }
         document.getElementById('s_cancel').disabled = false;
     }, false);
     document.getElementById('green').addEventListener('change', function(e) {
-        if ( document.getElementById('c_name').value != "" & (document.getElementById('s_yes').checked | document.getElementById('s_no').checked) ) {
-            document.getElementById('s_apply').disabled = false;
-            document.getElementById('s_new').disabled = false;
+        document.getElementById('s_apply').disabled = false;
+        if ( (document.getElementById('s_yes').checked | document.getElementById('s_no').checked) ) {
+            if ( document.getElementById('c_name').value != "" ) {
+                document.getElementById('s_new').disabled = false;
+            }
         }
         document.getElementById('s_cancel').disabled = false;
     }, false);
     document.getElementById('s_yes').addEventListener('change', function(e) {
-        if ( document.getElementById('c_name').value != "" & (document.getElementById('bw').checked | document.getElementById('green').checked) ) {
-            document.getElementById('s_apply').disabled = false;
-            document.getElementById('s_new').disabled = false;
+        if ( (document.getElementById('bw').checked | document.getElementById('green').checked) ) {
+            if ( document.getElementById('c_name').value != "" ) {
+                document.getElementById('s_new').disabled = false;
+            }
         }
         document.getElementById('s_cancel').disabled = false;
     }, false);
     document.getElementById('s_no').addEventListener('change', function(e) {
-        if ( document.getElementById('c_name').value != "" & (document.getElementById('bw').checked | document.getElementById('green').checked) ) {
-            document.getElementById('s_apply').disabled = false;
-            document.getElementById('s_new').disabled = false;
+        if ( (document.getElementById('bw').checked | document.getElementById('green').checked) ) {
+            if ( document.getElementById('c_name').value != "" ) {
+                document.getElementById('s_new').disabled = false;
+            }
         }
         document.getElementById('s_cancel').disabled = false;
     }, false);

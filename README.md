@@ -18,7 +18,9 @@ Please refer to [PasocomMini MZ-80Cの改造](http://cwaweb.bai.ne.jp/~ohishi/za
     * famebuffer_depth=16
     * sdtv_mode=16 (if you need)
 * Build main program of emulator
-    * cd emu/
+    * cd emu/z80
+    * make
+    * cd ..
     * make
 ## How to run
 * Start emu/mz80rpi and ui/uiserver.py . You can launch by script start.sh, add the attribute for runnable to start.sh before to run.
