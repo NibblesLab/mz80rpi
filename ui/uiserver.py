@@ -59,21 +59,22 @@ def recv_fifo(data):
             cur = dbfile.cursor()
             cur.execute('SELECT mrom,cgrom,color,title FROM SETTINGS WHERE startup="YES"')
             row = cur.fetchone()
-            cur.execute('SELECT file,title FROM PROGRAMS WHERE rowid=?', (row[0],))
-            row_mrom = cur.fetchone()
-            send_fifo(b"SMdata/"+row_mrom[0].encode())
-            mz80_st.monname = row_mrom[1]
-            if row[2] == "BW":
-                send_fifo(b"SC0")
-            else:
-                send_fifo(b"SC1")
-            cur.execute('SELECT file,title FROM PROGRAMS WHERE rowid=?', (row[1],))
-            row_cgrom = cur.fetchone()
-            send_fifo(b"SFdata/"+row_cgrom[0].encode())
-            mz80_st.cgname = row_cgrom[1]
+            if row != None:
+                cur.execute('SELECT file,title FROM PROGRAMS WHERE rowid=?', (row[0],))
+                row_mrom = cur.fetchone()
+                send_fifo(b"SMdata/"+row_mrom[0].encode())
+                mz80_st.monname = row_mrom[1]
+                if row[2] == "BW":
+                    send_fifo(b"SC0")
+                else:
+                    send_fifo(b"SC1")
+                cur.execute('SELECT file,title FROM PROGRAMS WHERE rowid=?', (row[1],))
+                row_cgrom = cur.fetchone()
+                send_fifo(b"SFdata/"+row_cgrom[0].encode())
+                mz80_st.cgname = row_cgrom[1]
+                mz80_st.cfgname = row[3]
+                send_fifo(b"SR")
             dbfile.close()
-            mz80_st.cfgname = row[3]
-            send_fifo(b"SR")
         elif kw == "GM":
             try:
                 vl = int(sts[2:])
