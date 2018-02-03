@@ -56,6 +56,7 @@ typedef struct
 	int		mzt_bsize;
 	int		mzt_percent;
 	int		mzt_settape;
+	int		mzt_period;
 } T700_TS;
 
 /* ÇWÇQÇTÇRÉXÉeÅ[É^ÉXå^ */

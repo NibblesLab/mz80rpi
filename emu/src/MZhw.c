@@ -160,6 +160,14 @@ void set_mztData(char *mztFile)
 	//printf("MZT size:%d\n", ts700.mzt_bsize);
 	ts700.mzt_elapse = 0;
 	ts700.mzt_settape = 1;
+	if(ts700.mzt_bsize < 4000)
+	{
+		ts700.mzt_period = 2;
+	}
+	else
+	{
+		ts700.mzt_period = 1;
+	}
 	sysst.tape = 0;
 	xferFlag |= SYST_CMT;
 	fclose(fd);
@@ -550,8 +558,9 @@ int cmt_read(void)
 		setup_cpuspeed(1);
 		return 0;
 	}
+	// 進捗表示用
 	percent = (tword * 100) / ts700.mzt_bsize;
-	if(percent != sysst.tape)
+	if(percent - sysst.tape >= ts700.mzt_period)
 	{
 		//printf("old=%d new=%d\n", sysst.tape, percent);
 		sysst.tape = percent;
