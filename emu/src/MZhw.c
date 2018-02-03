@@ -510,14 +510,13 @@ void makePWM(void)
 			if(pat&0x80)
 			{
 				pwmTable[i][1] = 0x00000006 | (pwmTable[i][1] << 3);
-				pwmTable[i][0] += 3;
 				pwmTable[i][2]++;
 			}
 			else
 			{
-				pwmTable[i][1] = 0x00000002 | (pwmTable[i][1] << 2);
-				pwmTable[i][0] += 2;
+				pwmTable[i][1] = 0x00000004 | (pwmTable[i][1] << 3);
 			}
+			pwmTable[i][0] += 3;
 			pat <<= 1;
 		}
 		pwmTable[i][1] <<= (32 - pwmTable[i][0]);
